@@ -148,6 +148,35 @@ class InstagramPhotoAnalyzer {
           <div style="margin-bottom: 5px;">RGB 直方图:</div>
           <canvas class="histogram-canvas" width="200" height="100"></canvas>
         </div>
+        <!-- 实时采样信息 -->
+        <div class="sampling-info">
+          <div style="display: flex; align-items: center; margin-bottom: 8px;">
+            <div class="color-preview" id="colorPreview" style="width: 20px; height: 20px; border: 1px solid #666; border-radius: 3px; margin-right: 8px; background: #333;"></div>
+            <span style="font-size: 11px; opacity: 0.8;">实时采样</span>
+          </div>
+          <div class="rgb-values">
+            <div class="rgb-item">
+              <span class="rgb-label">R:</span>
+              <span class="rgb-value" id="currentR">---</span>
+            </div>
+            <div class="rgb-item">
+              <span class="rgb-label">G:</span>
+              <span class="rgb-value" id="currentG">---</span>
+            </div>
+            <div class="rgb-item">
+              <span class="rgb-label">B:</span>
+              <span class="rgb-value" id="currentB">---</span>
+            </div>
+          </div>
+          <div class="additional-values">
+            <span class="hex-value" id="hexValue">#------</span>
+            <span class="hsb-value" id="hsbValue">H:-- S:-- B:--</span>
+          </div>
+        </div>
+        
+        <!-- 分割线 -->
+        <div style="border-top: 1px solid rgba(255,255,255,0.1); margin: 10px 0;"></div>
+        
         <div class="color-info">
           <div class="info-item">
             <span class="info-label">平均亮度:</span>
@@ -177,6 +206,9 @@ class InstagramPhotoAnalyzer {
 
         // 分析图片
         await this.analyzeImage(imgElement, overlay);
+        
+        // 启用实时采样
+        this.enableRealTimeSampling(imgElement, overlay);
       }
     } catch (error) {
       console.error('分析图片时出错:', error);
@@ -185,6 +217,13 @@ class InstagramPhotoAnalyzer {
 
   hideAnalysis() {
     if (this.activeAnalyzer) {
+      // 清理事件监听器
+      if (this.activeAnalyzer._samplingHandlers) {
+        const handlers = this.activeAnalyzer._samplingHandlers;
+        handlers.element.removeEventListener('mousemove', handlers.mousemove);
+        handlers.element.removeEventListener('mouseleave', handlers.mouseleave);
+      }
+      
       this.activeAnalyzer.remove();
       this.activeAnalyzer = null;
     }
@@ -485,6 +524,156 @@ class InstagramPhotoAnalyzer {
       ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
       ctx.fillText(highlightChannels.join(''), margin + width - 15, margin + height - 5);
     }
+  }
+
+  enableRealTimeSampling(imgElement, overlay) {
+    let samplingCanvas = null;
+    let samplingCtx = null;
+    
+    const handleMouseMove = async (e) => {
+      try {
+        // 获取鼠标相对于图片的位置
+        const rect = imgElement.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        // 确保鼠标在图片范围内
+        if (x < 0 || y < 0 || x >= rect.width || y >= rect.height) {
+          return;
+        }
+        
+        // 懒加载canvas
+        if (!samplingCanvas) {
+          const canvasData = await this.createSamplingCanvas(imgElement);
+          samplingCanvas = canvasData.canvas;
+          samplingCtx = canvasData.ctx;
+        }
+        
+        // 计算采样位置（考虑图片缩放）
+        const scaleX = samplingCanvas.width / rect.width;
+        const scaleY = samplingCanvas.height / rect.height;
+        const canvasX = Math.floor(x * scaleX);
+        const canvasY = Math.floor(y * scaleY);
+        
+        // 获取像素颜色
+        const pixelData = samplingCtx.getImageData(canvasX, canvasY, 1, 1);
+        const r = pixelData.data[0];
+        const g = pixelData.data[1];
+        const b = pixelData.data[2];
+        
+        // 更新采样信息显示
+        this.updateSamplingInfo(overlay, r, g, b);
+        
+      } catch (error) {
+        console.error('实时采样错误:', error);
+      }
+    };
+    
+    const handleMouseLeave = () => {
+      // 重置采样信息
+      this.resetSamplingInfo(overlay);
+    };
+    
+    // 绑定事件
+    imgElement.addEventListener('mousemove', handleMouseMove);
+    imgElement.addEventListener('mouseleave', handleMouseLeave);
+    
+    // 保存事件处理器以便清理
+    overlay._samplingHandlers = {
+      mousemove: handleMouseMove,
+      mouseleave: handleMouseLeave,
+      element: imgElement
+    };
+  }
+
+  async createSamplingCanvas(imgElement) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // 等待图片加载
+    await this.waitForImageLoad(imgElement);
+    
+    // 设置canvas尺寸（限制最大尺寸以提高性能）
+    const maxSize = 800;
+    const ratio = Math.min(maxSize / imgElement.naturalWidth, maxSize / imgElement.naturalHeight);
+    canvas.width = imgElement.naturalWidth * ratio;
+    canvas.height = imgElement.naturalHeight * ratio;
+    
+    // 绘制图片到canvas
+    ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
+    
+    return { canvas, ctx };
+  }
+
+  updateSamplingInfo(overlay, r, g, b) {
+    // 更新RGB数值
+    overlay.querySelector('#currentR').textContent = r;
+    overlay.querySelector('#currentG').textContent = g;
+    overlay.querySelector('#currentB').textContent = b;
+    
+    // 更新色彩预览
+    const colorPreview = overlay.querySelector('#colorPreview');
+    colorPreview.style.background = `rgb(${r}, ${g}, ${b})`;
+    
+    // 更新十六进制值
+    const hex = this.rgbToHex(r, g, b);
+    overlay.querySelector('#hexValue').textContent = hex;
+    
+    // 更新HSB值
+    const hsb = this.rgbToHsb(r, g, b);
+    overlay.querySelector('#hsbValue').textContent = 
+      `H:${hsb.h} S:${hsb.s} B:${hsb.b}`;
+  }
+
+  resetSamplingInfo(overlay) {
+    overlay.querySelector('#currentR').textContent = '---';
+    overlay.querySelector('#currentG').textContent = '---';
+    overlay.querySelector('#currentB').textContent = '---';
+    overlay.querySelector('#colorPreview').style.background = '#333';
+    overlay.querySelector('#hexValue').textContent = '#------';
+    overlay.querySelector('#hsbValue').textContent = 'H:-- S:-- B:--';
+  }
+
+  rgbToHex(r, g, b) {
+    const toHex = (c) => {
+      const hex = c.toString(16);
+      return hex.length === 1 ? '0' + hex : hex;
+    };
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`.toUpperCase();
+  }
+
+  rgbToHsb(r, g, b) {
+    r /= 255;
+    g /= 255;
+    b /= 255;
+    
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const diff = max - min;
+    
+    let h = 0;
+    const s = max === 0 ? 0 : diff / max;
+    const brightness = max;
+    
+    if (diff !== 0) {
+      switch (max) {
+        case r:
+          h = ((g - b) / diff + (g < b ? 6 : 0)) / 6;
+          break;
+        case g:
+          h = ((b - r) / diff + 2) / 6;
+          break;
+        case b:
+          h = ((r - g) / diff + 4) / 6;
+          break;
+      }
+    }
+    
+    return {
+      h: Math.round(h * 360),
+      s: Math.round(s * 100),
+      b: Math.round(brightness * 100)
+    };
   }
 }
 
