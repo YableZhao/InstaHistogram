@@ -406,19 +406,84 @@ class InstagramPhotoAnalyzer {
 
   drawClippingWarnings(ctx, histogram, maxValue, margin, width, height) {
     const barWidth = width / 256;
+    const threshold = maxValue * 0.005; // 0.5%的像素阈值，更敏感
+    const warningWidth = Math.max(barWidth * 3, 8); // 警告条宽度
     
-    // 检查阴影剪切 (纯黑区域)
-    const shadowClipping = histogram.red[0] + histogram.green[0] + histogram.blue[0];
-    if (shadowClipping > maxValue * 0.02) { // 超过2%的像素在纯黑
-      ctx.fillStyle = 'rgba(0, 100, 200, 0.3)'; // 蓝色警告
-      ctx.fillRect(margin, margin, barWidth * 5, height);
+    // 阴影剪切警告 (左侧，0值区域)
+    let shadowYOffset = 0;
+    
+    // 红色通道阴影剪切
+    if (histogram.red[0] > threshold) {
+      ctx.fillStyle = 'rgba(255, 100, 100, 0.7)';
+      ctx.fillRect(margin, margin + shadowYOffset, warningWidth, height / 3 - 1);
+      shadowYOffset += height / 3;
     }
     
-    // 检查高光剪切 (纯白区域)  
-    const highlightClipping = histogram.red[255] + histogram.green[255] + histogram.blue[255];
-    if (highlightClipping > maxValue * 0.02) { // 超过2%的像素在纯白
-      ctx.fillStyle = 'rgba(255, 50, 50, 0.3)'; // 红色警告
-      ctx.fillRect(margin + width - barWidth * 5, margin, barWidth * 5, height);
+    // 绿色通道阴影剪切
+    if (histogram.green[0] > threshold) {
+      ctx.fillStyle = 'rgba(100, 255, 100, 0.7)';
+      ctx.fillRect(margin, margin + shadowYOffset, warningWidth, height / 3 - 1);
+      shadowYOffset += height / 3;
+    }
+    
+    // 蓝色通道阴影剪切
+    if (histogram.blue[0] > threshold) {
+      ctx.fillStyle = 'rgba(100, 100, 255, 0.7)';
+      ctx.fillRect(margin, margin + shadowYOffset, warningWidth, height / 3 - 1);
+    }
+    
+    // 高光剪切警告 (右侧，255值区域)
+    let highlightYOffset = 0;
+    const rightX = margin + width - warningWidth;
+    
+    // 红色通道高光剪切
+    if (histogram.red[255] > threshold) {
+      ctx.fillStyle = 'rgba(255, 100, 100, 0.7)';
+      ctx.fillRect(rightX, margin + highlightYOffset, warningWidth, height / 3 - 1);
+      highlightYOffset += height / 3;
+    }
+    
+    // 绿色通道高光剪切
+    if (histogram.green[255] > threshold) {
+      ctx.fillStyle = 'rgba(100, 255, 100, 0.7)';
+      ctx.fillRect(rightX, margin + highlightYOffset, warningWidth, height / 3 - 1);
+      highlightYOffset += height / 3;
+    }
+    
+    // 蓝色通道高光剪切
+    if (histogram.blue[255] > threshold) {
+      ctx.fillStyle = 'rgba(100, 100, 255, 0.7)';
+      ctx.fillRect(rightX, margin + highlightYOffset, warningWidth, height / 3 - 1);
+    }
+    
+    // 绘制通道标识 (当有剪切时)
+    this.drawClippingLabels(ctx, histogram, threshold, margin, width, height);
+  }
+
+  drawClippingLabels(ctx, histogram, threshold, margin, width, height) {
+    ctx.font = '9px -apple-system, BlinkMacSystemFont, sans-serif';
+    ctx.textAlign = 'center';
+    
+    // 左侧阴影剪切标签
+    const shadowChannels = [];
+    if (histogram.red[0] > threshold) shadowChannels.push('R');
+    if (histogram.green[0] > threshold) shadowChannels.push('G');  
+    if (histogram.blue[0] > threshold) shadowChannels.push('B');
+    
+    if (shadowChannels.length > 0) {
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+      ctx.fillText(shadowChannels.join(''), margin + 15, margin + height - 5);
+    }
+    
+    // 右侧高光剪切标签
+    const highlightChannels = [];
+    if (histogram.red[255] > threshold) highlightChannels.push('R');
+    if (histogram.green[255] > threshold) highlightChannels.push('G');
+    if (histogram.blue[255] > threshold) highlightChannels.push('B');
+    
+    if (highlightChannels.length > 0) {
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+      ctx.fillText(highlightChannels.join(''), margin + width - 15, margin + height - 5);
     }
   }
 }
