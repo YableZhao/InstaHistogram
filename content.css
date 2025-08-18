@@ -90,10 +90,24 @@
   margin-bottom: 2px !important;
 }
 
-.rgb-value {
+.rgb-dual-value {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 1px !important;
+}
+
+.rgb-percentage {
   font-weight: bold !important;
   font-size: 12px !important;
   color: #ffffff !important;
+  font-family: 'SF Mono', 'Monaco', 'Menlo', monospace !important;
+}
+
+.rgb-255 {
+  font-weight: 500 !important;
+  font-size: 9px !important;
+  color: rgba(255, 255, 255, 0.7) !important;
   font-family: 'SF Mono', 'Monaco', 'Menlo', monospace !important;
 }
 

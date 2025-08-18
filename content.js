@@ -157,15 +157,24 @@ class InstagramPhotoAnalyzer {
           <div class="rgb-values">
             <div class="rgb-item">
               <span class="rgb-label">R:</span>
-              <span class="rgb-value" id="currentR">---</span>
+              <div class="rgb-dual-value">
+                <span class="rgb-percentage" id="currentR_pct">---%</span>
+                <span class="rgb-255" id="currentR_255">---</span>
+              </div>
             </div>
             <div class="rgb-item">
               <span class="rgb-label">G:</span>
-              <span class="rgb-value" id="currentG">---</span>
+              <div class="rgb-dual-value">
+                <span class="rgb-percentage" id="currentG_pct">---%</span>
+                <span class="rgb-255" id="currentG_255">---</span>
+              </div>
             </div>
             <div class="rgb-item">
               <span class="rgb-label">B:</span>
-              <span class="rgb-value" id="currentB">---</span>
+              <div class="rgb-dual-value">
+                <span class="rgb-percentage" id="currentB_pct">---%</span>
+                <span class="rgb-255" id="currentB_255">---</span>
+              </div>
             </div>
           </div>
           <div class="additional-values">
@@ -606,10 +615,20 @@ class InstagramPhotoAnalyzer {
   }
 
   updateSamplingInfo(overlay, r, g, b) {
-    // 更新RGB数值
-    overlay.querySelector('#currentR').textContent = r;
-    overlay.querySelector('#currentG').textContent = g;
-    overlay.querySelector('#currentB').textContent = b;
+    // 计算百分比值 (Lightroom风格)
+    const rPct = Math.round((r / 255) * 100);
+    const gPct = Math.round((g / 255) * 100);
+    const bPct = Math.round((b / 255) * 100);
+    
+    // 更新RGB百分比数值
+    overlay.querySelector('#currentR_pct').textContent = `${rPct}%`;
+    overlay.querySelector('#currentG_pct').textContent = `${gPct}%`;
+    overlay.querySelector('#currentB_pct').textContent = `${bPct}%`;
+    
+    // 更新RGB 0-255数值
+    overlay.querySelector('#currentR_255').textContent = r;
+    overlay.querySelector('#currentG_255').textContent = g;
+    overlay.querySelector('#currentB_255').textContent = b;
     
     // 更新色彩预览
     const colorPreview = overlay.querySelector('#colorPreview');
@@ -626,9 +645,17 @@ class InstagramPhotoAnalyzer {
   }
 
   resetSamplingInfo(overlay) {
-    overlay.querySelector('#currentR').textContent = '---';
-    overlay.querySelector('#currentG').textContent = '---';
-    overlay.querySelector('#currentB').textContent = '---';
+    // 重置百分比显示
+    overlay.querySelector('#currentR_pct').textContent = '---%';
+    overlay.querySelector('#currentG_pct').textContent = '---%';
+    overlay.querySelector('#currentB_pct').textContent = '---%';
+    
+    // 重置0-255显示
+    overlay.querySelector('#currentR_255').textContent = '---';
+    overlay.querySelector('#currentG_255').textContent = '---';
+    overlay.querySelector('#currentB_255').textContent = '---';
+    
+    // 重置其他显示
     overlay.querySelector('#colorPreview').style.background = '#333';
     overlay.querySelector('#hexValue').textContent = '#------';
     overlay.querySelector('#hsbValue').textContent = 'H:-- S:-- B:--';
