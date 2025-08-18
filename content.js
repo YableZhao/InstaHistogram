@@ -324,13 +324,16 @@ class InstagramPhotoAnalyzer {
     const width = canvas.width;
     const height = canvas.height;
     
-    // 清空画布
-    ctx.fillStyle = '#1a1a1a';
+    // 清空画布，使用专业渐变背景
+    const gradient = ctx.createLinearGradient(0, 0, 0, height);
+    gradient.addColorStop(0, '#1a1a1a');
+    gradient.addColorStop(1, '#0d1117');
+    ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
     
-    // 找到最大值用于归一化
+    // 找到全局最大值用于归一化
     const maxRed = Math.max(...histogram.red);
-    const maxGreen = Math.max(...histogram.green);
+    const maxGreen = Math.max(...histogram.green); 
     const maxBlue = Math.max(...histogram.blue);
     const maxValue = Math.max(maxRed, maxGreen, maxBlue);
     
@@ -338,47 +341,137 @@ class InstagramPhotoAnalyzer {
     
     const barWidth = width / 256;
     
-    // 绘制RGB直方图
+    // 使用screen混合模式绘制专业直方图
+    ctx.globalCompositeOperation = 'screen';
+    
+    // 红色通道 - 使用柔和的红色
+    ctx.strokeStyle = 'rgba(255, 99, 99, 0.9)';
+    ctx.fillStyle = 'rgba(255, 99, 99, 0.3)';
+    ctx.lineWidth = 1.5;
+    this.drawSmoothHistogramChannel(ctx, histogram.red, maxValue, width, height);
+    
+    // 绿色通道 - 使用柔和的绿色
+    ctx.strokeStyle = 'rgba(99, 255, 99, 0.9)';
+    ctx.fillStyle = 'rgba(99, 255, 99, 0.3)';
+    this.drawSmoothHistogramChannel(ctx, histogram.green, maxValue, width, height);
+    
+    // 蓝色通道 - 使用柔和的蓝色
+    ctx.strokeStyle = 'rgba(99, 99, 255, 0.9)';
+    ctx.fillStyle = 'rgba(99, 99, 255, 0.3)';
+    this.drawSmoothHistogramChannel(ctx, histogram.blue, maxValue, width, height);
+    
+    // 重置混合模式
+    ctx.globalCompositeOperation = 'source-over';
+    
+    // 绘制专业网格
+    this.drawProfessionalGrid(ctx, width, height);
+    
+    // 添加通道标识
+    this.drawChannelLabels(ctx, width, height);
+  }
+
+  drawSmoothHistogramChannel(ctx, channelData, maxValue, width, height) {
+    const barWidth = width / 256;
+    
+    // 创建路径用于填充
+    ctx.beginPath();
+    ctx.moveTo(0, height);
+    
+    // 绘制平滑曲线
     for (let i = 0; i < 256; i++) {
       const x = i * barWidth;
+      const normalizedHeight = (channelData[i] / maxValue) * height;
+      const y = height - normalizedHeight;
       
-      // 红色通道
-      const redHeight = (histogram.red[i] / maxValue) * height;
-      ctx.fillStyle = `rgba(255, 0, 0, 0.7)`;
-      ctx.fillRect(x, height - redHeight, barWidth, redHeight);
-      
-      // 绿色通道
-      const greenHeight = (histogram.green[i] / maxValue) * height;
-      ctx.fillStyle = `rgba(0, 255, 0, 0.7)`;
-      ctx.fillRect(x, height - greenHeight, barWidth, greenHeight);
-      
-      // 蓝色通道
-      const blueHeight = (histogram.blue[i] / maxValue) * height;
-      ctx.fillStyle = `rgba(0, 0, 255, 0.7)`;
-      ctx.fillRect(x, height - blueHeight, barWidth, blueHeight);
+      if (i === 0) {
+        ctx.lineTo(x, y);
+      } else {
+        // 使用二次贝塞尔曲线平滑连接点
+        const prevX = (i - 1) * barWidth;
+        const prevY = height - (channelData[i - 1] / maxValue) * height;
+        const cpX = (prevX + x) / 2;
+        ctx.quadraticCurveTo(cpX, prevY, x, y);
+      }
     }
     
-    // 添加网格线
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-    ctx.lineWidth = 0.5;
+    // 完成填充路径
+    ctx.lineTo(width, height);
+    ctx.closePath();
+    ctx.fill();
     
-    // 水平网格线
-    for (let i = 1; i < 4; i++) {
-      const y = (height / 4) * i;
+    // 绘制边缘线
+    ctx.beginPath();
+    ctx.moveTo(0, height - (channelData[0] / maxValue) * height);
+    for (let i = 1; i < 256; i++) {
+      const x = i * barWidth;
+      const y = height - (channelData[i] / maxValue) * height;
+      const prevX = (i - 1) * barWidth;
+      const prevY = height - (channelData[i - 1] / maxValue) * height;
+      const cpX = (prevX + x) / 2;
+      ctx.quadraticCurveTo(cpX, prevY, x, y);
+    }
+    ctx.stroke();
+  }
+
+  drawProfessionalGrid(ctx, width, height) {
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+    ctx.lineWidth = 0.5;
+    ctx.setLineDash([2, 2]); // 虚线网格更专业
+    
+    // 水平网格线 - 更多分割线
+    for (let i = 1; i < 5; i++) {
+      const y = (height / 5) * i;
       ctx.beginPath();
       ctx.moveTo(0, y);
       ctx.lineTo(width, y);
       ctx.stroke();
     }
     
-    // 垂直网格线 (四等分)
-    for (let i = 1; i < 4; i++) {
-      const x = (width / 4) * i;
+    // 垂直网格线 - 代表关键的亮度区域
+    const keyPoints = [64, 128, 192]; // 阴影、中间调、高光
+    keyPoints.forEach(point => {
+      const x = (point / 256) * width;
       ctx.beginPath();
       ctx.moveTo(x, 0);
       ctx.lineTo(x, height);
       ctx.stroke();
-    }
+    });
+    
+    ctx.setLineDash([]); // 重置虚线
+  }
+
+  drawChannelLabels(ctx, width, height) {
+    ctx.font = '10px -apple-system, BlinkMacSystemFont, sans-serif';
+    ctx.textAlign = 'right';
+    
+    // RGB标签
+    ctx.fillStyle = 'rgba(255, 99, 99, 0.8)';
+    ctx.fillText('R', width - 5, 15);
+    
+    ctx.fillStyle = 'rgba(99, 255, 99, 0.8)';
+    ctx.fillText('G', width - 5, 27);
+    
+    ctx.fillStyle = 'rgba(99, 99, 255, 0.8)';
+    ctx.fillText('B', width - 5, 39);
+    
+    // 底部刻度标签
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+    ctx.textAlign = 'center';
+    ctx.font = '9px -apple-system, BlinkMacSystemFont, sans-serif';
+    
+    // 关键数值
+    const labels = [
+      { value: 0, label: '0' },
+      { value: 64, label: '64' },
+      { value: 128, label: '128' },
+      { value: 192, label: '192' },
+      { value: 255, label: '255' }
+    ];
+    
+    labels.forEach(({ value, label }) => {
+      const x = (value / 256) * width;
+      ctx.fillText(label, x, height - 2);
+    });
   }
 }
 
