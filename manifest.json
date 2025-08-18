@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "Instagram Photo Analyzer",
+  "version": "1.0",
+  "description": "实时分析Instagram图片的直方图、色彩和曝光参数",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*.instagram.com/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Instagram Photo Analyzer"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["*.js", "*.css", "*.png"],
+      "matches": ["*://*.instagram.com/*"]
+    }
+  ]
+}

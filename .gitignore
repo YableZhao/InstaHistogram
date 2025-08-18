@@ -1,0 +1,46 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node.js (if using any build tools later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Extension development
+*.crx
+*.pem
+web-ext-artifacts/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Archive files (for distribution)
+dist/
+build/
+*.zip
+
+# Log files
+*.log
+
+# Local env files (if any secrets later)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
