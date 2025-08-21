@@ -1,12 +1,12 @@
-# 📊 Instagram Photo Analyzer
+# 📊 InstaHistogram
 
 **The world's first browser extension for real-time Instagram photo analysis with professional-grade RGB histograms and color sampling.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-4285F4?logo=google-chrome&logoColor=white)](https://chrome.google.com/webstore)
-[![GitHub Stars](https://img.shields.io/github/stars/YableZhao/instagram-photo-analyzer?style=social)](https://github.com/YableZhao/instagram-photo-analyzer)
+[![GitHub Stars](https://img.shields.io/github/stars/YableZhao/instahistogram?style=social)](https://github.com/YableZhao/instahistogram)
 
-![Instagram Photo Analyzer Demo](https://via.placeholder.com/800x400/667eea/ffffff?text=Instagram+Photo+Analyzer+Demo)
+![InstaHistogram Demo](https://via.placeholder.com/800x400/667eea/ffffff?text=InstaHistogram+Demo)
 
 ## ✨ Features
 
@@ -67,7 +67,7 @@
 ### Live Color Sampling
 ```
 ┌─────────────────────────────┐
-│ 📊 Photo Analysis           │
+│ 📊 InstaHistogram           │
 │ ┌─────────────────────────┐ │
 │ │   Adobe-Style Histogram │ │
 │ │  (RGB filled curves)    │ │
@@ -107,9 +107,9 @@
 ## 🏗️ Project Structure
 
 ```
-instagram-photo-analyzer/
+instahistogram/
 ├── manifest.json          # Chrome extension configuration
-├── content.js             # Core analysis functionality (600+ lines)
+├── content.js             # Core analysis functionality (700+ lines)
 ├── content.css            # Professional styling
 ├── popup.html             # Extension popup interface
 ├── popup.js              # Settings and controls
@@ -119,7 +119,9 @@ instagram-photo-analyzer/
 │   ├── icon48.png
 │   └── icon128.png
 ├── generate-icons.html   # Icon generation tool
+├── package-for-store.sh  # Automated packaging script
 ├── README.md             # This file
+├── ROADMAP.md           # Future development plans
 ├── INSTALL.md           # Installation guide
 ├── CONTRIBUTING.md      # Contribution guidelines
 ├── CHROME_STORE_LISTING.md # Store listing content

@@ -25,7 +25,7 @@ Run this command to create the submission package:
 
 ```bash
 # Create a clean package for Chrome Web Store
-zip -r instagram-photo-analyzer-v1.0.zip \
+zip -r instahistogram-v1.0.zip \
   manifest.json \
   content.js \
   content.css \
@@ -39,7 +39,7 @@ zip -r instagram-photo-analyzer-v1.0.zip \
 ### Step 2: Verify Package Contents
 The ZIP file should contain:
 ```
-instagram-photo-analyzer-v1.0.zip
+instahistogram-v1.0.zip
 ├── manifest.json
 ├── content.js  
 ├── content.css
@@ -62,7 +62,7 @@ instagram-photo-analyzer-v1.0.zip
 
 ### Step 2: Upload Extension
 1. Click **"Add new item"** 
-2. Upload your `instagram-photo-analyzer-v1.0.zip` file
+2. Upload your `instahistogram-v1.0.zip` file
 3. Wait for upload processing (1-2 minutes)
 
 ### Step 3: Store Listing Information
@@ -125,7 +125,7 @@ You'll need to create 3-5 screenshots showing:
 
 ## 📊 Store Listing Preview
 
-**Title:** Instagram Photo Analyzer
+**Title:** InstaHistogram
 
 **Short Description:** 
 Professional real-time RGB histogram and color analysis for Instagram photos. Perfect for photographers and designers.

@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Instagram Photo Analyzer",
+  "name": "InstaHistogram",
   "version": "1.0",
-  "description": "Professional real-time RGB histogram and color analysis for Instagram photos. Perfect for photographers and designers.",
+  "description": "Professional real-time RGB histogram and color sampling for Instagram photos. Perfect for photographers and designers.",
   "permissions": [
     "activeTab",
     "storage"
@@ -17,7 +17,7 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Instagram Photo Analyzer - Professional Photography Tool"
+    "default_title": "InstaHistogram - Professional Photography Tool"
   },
   "background": {
     "service_worker": "background.js"
@@ -33,6 +33,6 @@
       "matches": ["*://*.instagram.com/*"]
     }
   ],
-  "homepage_url": "https://github.com/YableZhao/instagram-photo-analyzer",
+  "homepage_url": "https://github.com/YableZhao/instahistogram",
   "author": "YableZhao"
 }

@@ -9,7 +9,7 @@ echo "📦 Creating Chrome Web Store package..."
 
 # Get version from manifest.json
 VERSION=$(grep '"version"' manifest.json | sed 's/.*"version": "\(.*\)".*/\1/')
-PACKAGE_NAME="instagram-photo-analyzer-v${VERSION}"
+PACKAGE_NAME="instahistogram-v${VERSION}"
 
 echo "🔖 Version: ${VERSION}"
 
@@ -72,7 +72,7 @@ echo "🗜️  Creating ZIP package..."
 cd "${TEMP_DIR}"
 zip -r "${PACKAGE_NAME}.zip" "${PACKAGE_NAME}/" -x "*.DS_Store" "*.git*" >/dev/null
 
-# Move package to current directory
+# Move package to project directory
 mv "${PACKAGE_NAME}.zip" "${OLDPWD}/"
 
 # Cleanup
@@ -80,12 +80,12 @@ rm -rf "${TEMP_DIR}"
 
 echo "🎉 Package created successfully!"
 echo "📦 File: ${PACKAGE_NAME}.zip"
-echo "📊 Size: $(du -h "${PACKAGE_NAME}.zip" | cut -f1)"
+echo "📊 Size: $(du -h "${OLDPWD}/${PACKAGE_NAME}.zip" | cut -f1)"
 
 # Show package contents
 echo ""
 echo "📋 Package contents:"
-unzip -l "${PACKAGE_NAME}.zip" | grep -v "Archive:"
+unzip -l "${OLDPWD}/${PACKAGE_NAME}.zip" | grep -v "Archive:"
 
 echo ""
 echo "🚀 Ready for Chrome Web Store submission!"

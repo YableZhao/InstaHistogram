@@ -1,4 +1,4 @@
-// Instagram Photo Analyzer - Popup Script
+// InstaHistogram - Popup Script
 
 class PopupController {
   constructor() {

@@ -1,12 +1,12 @@
-// Instagram Photo Analyzer - Content Script
-class InstagramPhotoAnalyzer {
+// InstaHistogram - Content Script
+class InstaHistogramAnalyzer {
   constructor() {
     this.activeAnalyzer = null;
     this.init();
   }
 
   init() {
-    console.log('Instagram Photo Analyzer initialized');
+    console.log('InstaHistogram initialized');
     this.injectStyles();
     this.attachEventListeners();
   }
@@ -704,5 +704,5 @@ class InstagramPhotoAnalyzer {
   }
 }
 
-// 初始化分析器
-const analyzer = new InstagramPhotoAnalyzer();
+// Initialize InstaHistogram
+const analyzer = new InstaHistogramAnalyzer();

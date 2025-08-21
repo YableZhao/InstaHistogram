@@ -1,7 +1,7 @@
-# Chrome Web Store Listing - Instagram Photo Analyzer
+# Chrome Web Store Listing - InstaHistogram
 
 ## 📊 Extension Title
-**Instagram Photo Analyzer - Professional Photography Tool**
+**InstaHistogram - Professional Photography Tool**
 
 ## 📝 Short Description (132 characters max)
 Professional real-time RGB histogram and color analysis for Instagram photos. Perfect for photographers and designers.
@@ -10,7 +10,7 @@ Professional real-time RGB histogram and color analysis for Instagram photos. Pe
 
 **Transform your Instagram browsing into a professional photography learning experience!**
 
-Instagram Photo Analyzer is the world's first browser extension that provides **Lightroom-style real-time color analysis** directly on Instagram.com. No more saving photos to analyze them - simply hover your mouse over any image to get instant professional insights.
+InstaHistogram is the world's first browser extension that provides **Lightroom-style real-time color analysis** directly on Instagram.com. No more saving photos to analyze them - simply hover your mouse over any image to get instant professional insights.
 
 ## 🎯 **Key Features**
 
@@ -78,9 +78,9 @@ Instagram Photo Analyzer is the world's first browser extension that provides **
 
 ## ✨ **Unique Advantages**
 
-**🌍 World's First Instagram Analyzer**
+**🌍 World's First Instagram Histogram Tool**
 - No other tool provides real-time Instagram photo analysis
-- Patented hover-to-analyze technology
+- Revolutionary hover-to-analyze technology
 - Direct integration with Instagram's interface
 
 **🎯 Professional-Grade Accuracy**
@@ -145,7 +145,7 @@ Instagram Photo Analyzer is the world's first browser extension that provides **
 
 ## 🏆 **What Makes This Special**
 
-Unlike other photo analysis tools that require downloading images and using separate software, Instagram Photo Analyzer works **instantly** and **directly** on Instagram. It's like having Adobe Lightroom's Info panel built right into your browser.
+Unlike other photo analysis tools that require downloading images and using separate software, InstaHistogram works **instantly** and **directly** on Instagram. It's like having Adobe Lightroom's Info panel built right into your browser.
 
 **Before:** Save image → Open in Photoshop → Analyze → Close → Repeat
 **After:** Just hover your mouse! ✨

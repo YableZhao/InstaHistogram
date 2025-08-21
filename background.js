@@ -1,4 +1,4 @@
-// Instagram Photo Analyzer - Background Script
+// InstaHistogram - Background Script
 
 class BackgroundService {
   constructor() {
@@ -7,7 +7,7 @@ class BackgroundService {
 
   init() {
     this.setupEventListeners();
-    console.log('Instagram Photo Analyzer background service started');
+    console.log('InstaHistogram background service started');
   }
 
   setupEventListeners() {
@@ -23,7 +23,7 @@ class BackgroundService {
 
   async handleInstall(details) {
     if (details.reason === 'install') {
-      console.log('Instagram Photo Analyzer installed');
+      console.log('InstaHistogram installed');
       
       // 设置默认设置
       await chrome.storage.sync.set({
@@ -36,7 +36,7 @@ class BackgroundService {
       // 打开欢迎页面或使用说明
       this.showWelcome();
     } else if (details.reason === 'update') {
-      console.log('Instagram Photo Analyzer updated');
+      console.log('InstaHistogram updated');
       this.handleUpdate();
     }
   }
