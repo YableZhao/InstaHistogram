@@ -105,19 +105,19 @@ class InstagramPhotoAnalyzer {
 
   createToggleButton() {
     const button = document.createElement('button');
-    button.textContent = '📊 分析';
+    button.textContent = '📊 Analyze';
     button.className = 'photo-analyzer-toggle';
     button.onclick = () => this.toggleAnalyzer();
     document.body.appendChild(button);
     
-    // 默认启用
+    // Enable by default
     this.isEnabled = true;
   }
 
   toggleAnalyzer() {
     this.isEnabled = !this.isEnabled;
     const button = document.querySelector('.photo-analyzer-toggle');
-    button.textContent = this.isEnabled ? '📊 分析' : '📊 关闭';
+    button.textContent = this.isEnabled ? '📊 Analyze' : '📊 Disabled';
     button.style.background = this.isEnabled ? '#ff3040' : '#666';
     
     if (!this.isEnabled) {
@@ -143,16 +143,16 @@ class InstagramPhotoAnalyzer {
       const overlay = document.createElement('div');
       overlay.className = 'photo-analyzer-overlay';
       overlay.innerHTML = `
-        <div style="margin-bottom: 10px; font-weight: bold;">📊 图片分析</div>
+        <div style="margin-bottom: 10px; font-weight: bold;">📊 Photo Analysis</div>
         <div class="histogram-container">
-          <div style="margin-bottom: 5px;">RGB 直方图:</div>
+          <div style="margin-bottom: 5px;">RGB Histogram:</div>
           <canvas class="histogram-canvas" width="200" height="100"></canvas>
         </div>
-        <!-- 实时采样信息 -->
+        <!-- Real-time Color Sampling -->
         <div class="sampling-info">
           <div style="display: flex; align-items: center; margin-bottom: 8px;">
             <div class="color-preview" id="colorPreview" style="width: 20px; height: 20px; border: 1px solid #666; border-radius: 3px; margin-right: 8px; background: #333;"></div>
-            <span style="font-size: 11px; opacity: 0.8;">实时采样</span>
+            <span style="font-size: 11px; opacity: 0.8;">Live Sampling</span>
           </div>
           <div class="rgb-values">
             <div class="rgb-item">
@@ -188,20 +188,20 @@ class InstagramPhotoAnalyzer {
         
         <div class="color-info">
           <div class="info-item">
-            <span class="info-label">平均亮度:</span>
-            <span class="info-value" id="brightness">计算中...</span>
+            <span class="info-label">Brightness:</span>
+            <span class="info-value" id="brightness">Calculating...</span>
           </div>
           <div class="info-item">
-            <span class="info-label">对比度:</span>
-            <span class="info-value" id="contrast">计算中...</span>
+            <span class="info-label">Contrast:</span>
+            <span class="info-value" id="contrast">Calculating...</span>
           </div>
           <div class="info-item">
-            <span class="info-label">色温:</span>
-            <span class="info-value" id="colorTemp">计算中...</span>
+            <span class="info-label">Color Temp:</span>
+            <span class="info-value" id="colorTemp">Calculating...</span>
           </div>
           <div class="info-item">
-            <span class="info-label">饱和度:</span>
-            <span class="info-value" id="saturation">计算中...</span>
+            <span class="info-label">Saturation:</span>
+            <span class="info-value" id="saturation">Calculating...</span>
           </div>
         </div>
       `;
@@ -220,7 +220,7 @@ class InstagramPhotoAnalyzer {
         this.enableRealTimeSampling(imgElement, overlay);
       }
     } catch (error) {
-      console.error('分析图片时出错:', error);
+      console.error('Error analyzing image:', error);
     }
   }
 
@@ -273,8 +273,8 @@ class InstagramPhotoAnalyzer {
       overlay.querySelector('#saturation').textContent = `${analysis.saturation}%`;
       
     } catch (error) {
-      console.error('图片分析失败:', error);
-      overlay.innerHTML = '<div style="color: #ff6b6b;">分析失败</div>';
+      console.error('Image analysis failed:', error);
+      overlay.innerHTML = '<div style="color: #ff6b6b;">Analysis Failed</div>';
     }
   }
 
@@ -285,8 +285,8 @@ class InstagramPhotoAnalyzer {
       } else {
         img.onload = resolve;
         img.onerror = reject;
-        // 5秒超时
-        setTimeout(() => reject(new Error('图片加载超时')), 5000);
+        // 5 second timeout
+        setTimeout(() => reject(new Error('Image loading timeout')), 5000);
       }
     });
   }
@@ -574,7 +574,7 @@ class InstagramPhotoAnalyzer {
         this.updateSamplingInfo(overlay, r, g, b);
         
       } catch (error) {
-        console.error('实时采样错误:', error);
+        console.error('Real-time sampling error:', error);
       }
     };
     

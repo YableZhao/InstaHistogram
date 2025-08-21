@@ -23,7 +23,7 @@ class PopupController {
       // 更新UI
       document.getElementById('enableAnalyzer').checked = this.settings.enabled;
     } catch (error) {
-      console.error('加载设置失败:', error);
+      console.error('Failed to load settings:', error);
       this.settings = { enabled: true, showOnHover: true, histogramType: 'rgb' };
     }
   }
@@ -42,17 +42,17 @@ class PopupController {
     try {
       await chrome.storage.sync.set(this.settings);
     } catch (error) {
-      console.error('保存设置失败:', error);
+      console.error('Failed to save settings:', error);
     }
   }
 
   updateStatus() {
     const statusElement = document.getElementById('status');
     if (this.settings.enabled) {
-      statusElement.textContent = '✅ 分析器已启用';
+      statusElement.textContent = '✅ Analyzer Enabled';
       statusElement.className = 'status active';
     } else {
-      statusElement.textContent = '❌ 分析器已禁用';
+      statusElement.textContent = '❌ Analyzer Disabled';
       statusElement.className = 'status inactive';
     }
   }
@@ -66,9 +66,9 @@ class PopupController {
           settings: this.settings
         });
       }
-    } catch (error) {
-      console.error('通知内容脚本失败:', error);
-    }
+          } catch (error) {
+        console.error('Failed to notify content script:', error);
+      }
   }
 
   // 检查当前标签页是否为Instagram
@@ -94,15 +94,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   const isInstagram = tab && tab.url.includes('instagram.com');
   
   if (!isInstagram) {
-    // 如果不在Instagram页面，显示提示
+    // Show warning if not on Instagram page
     const instructionsElement = document.querySelector('.instructions');
     instructionsElement.innerHTML = `
-      <strong style="color: #ffeb3b;">⚠️ 注意:</strong><br>
-      请先访问 Instagram.com 使用此工具<br><br>
-      <strong>使用方法:</strong><br>
-      1. 访问 Instagram.com<br>
-      2. 将鼠标悬停在任何图片上<br>
-      3. 查看自动显示的分析面板
+      <strong style="color: #ffeb3b;">⚠️ Notice:</strong><br>
+      Please visit Instagram.com to use this tool<br><br>
+      <strong>How to Use:</strong><br>
+      1. Visit Instagram.com<br>
+      2. Hover your mouse over any photo<br>
+      3. View the automatic analysis panel
     `;
   }
 });
