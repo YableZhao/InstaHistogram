@@ -1,6 +1,6 @@
-# 🤝 Contributing to Instagram Photo Analyzer
+# 🤝 Contributing to InstaHistogram
 
-感谢您对Instagram Photo Analyzer项目的关注！我们欢迎所有形式的贡献。
+感谢您对InstaHistogram项目的关注！我们欢迎所有形式的贡献。
 
 ## 🔧 开发环境设置
 

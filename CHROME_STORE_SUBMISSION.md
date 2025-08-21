@@ -68,7 +68,7 @@ instahistogram-v1.0.zip
 ### Step 3: Store Listing Information
 
 **📝 Basic Information:**
-- **Extension Name**: `Instagram Photo Analyzer`
+- **Extension Name**: `InstaHistogram`
 - **Summary**: `Professional real-time RGB histogram and color analysis for Instagram photos. Perfect for photographers and designers.`
 - **Category**: `Photography`
 - **Language**: `English`

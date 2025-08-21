@@ -1,10 +1,10 @@
-# 🎨 Instagram Photo Analyzer - 营销材料
+# 🎨 InstaHistogram - 营销材料
 
 ## 📝 扩展商店描述
 
 ### 中文版本：
 ```
-📊 Instagram Photo Analyzer - 摄影师的专业分析工具
+📊 InstaHistogram - 摄影师的专业分析工具
 
 告别繁琐的图片保存和分析流程！这是世界上第一个可以在浏览Instagram时实时显示图片直方图和色彩参数的专业工具。
 
@@ -38,7 +38,7 @@
 
 ### English Version:
 ```
-📊 Instagram Photo Analyzer - Professional Tool for Photographers
+📊 InstaHistogram - Professional Tool for Photographers
 
 The world's first browser extension that provides real-time histogram and color analysis while browsing Instagram. No more saving images to analyze them!
 
@@ -146,7 +146,7 @@ photography, image-analysis, histogram, color-theory, instagram, visual-tools, p
 ### Twitter/X 发布文案：
 ```
 🎉 刚发布了一个革命性的摄影工具！
-📊 Instagram Photo Analyzer - 世界首个可以在浏览Instagram时实时显示直方图的浏览器扩展
+📊 InstaHistogram - 世界首个可以在浏览Instagram时实时显示直方图的浏览器扩展
 
 ✨ 悬停查看RGB直方图
 ✨ 实时色彩参数分析  

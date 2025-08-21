@@ -1,4 +1,4 @@
-// Instagram Photo Analyzer - 改进的直方图绘制方案
+// InstaHistogram - 改进的直方图绘制方案
 
 // 方案1: 专业的混合模式直方图
 function drawProfessionalHistogram(canvas, histogram) {

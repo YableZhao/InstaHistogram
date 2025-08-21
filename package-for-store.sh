@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Chrome Web Store Package Creator for Instagram Photo Analyzer
+# Chrome Web Store Package Creator for InstaHistogram
 # This script creates a clean ZIP package ready for Chrome Web Store submission
 
 set -e  # Exit on any error

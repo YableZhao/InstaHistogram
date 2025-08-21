@@ -1,4 +1,4 @@
-# 📦 Instagram Photo Analyzer 发布清单
+# 📦 InstaHistogram 发布清单
 
 ## 🎯 发布前准备
 
@@ -64,7 +64,7 @@
 
 ### 扩展描述示例：
 ```
-📊 Instagram Photo Analyzer - 摄影师的专业工具
+📊 InstaHistogram - 摄影师的专业工具
 
 实时分析Instagram图片的直方图、色彩和曝光参数，无需下载保存图片。
 

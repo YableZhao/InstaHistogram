@@ -1,4 +1,4 @@
-# 📦 Instagram Photo Analyzer 安装指南
+# 📦 InstaHistogram 安装指南
 
 ## 🎯 快速开始
 
